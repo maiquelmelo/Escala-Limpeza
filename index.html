@@ -23,7 +23,7 @@
 </header>
 <div class="layout">
   <aside class="sidebar no-print">
-    <div class="section"><p class="panel-title">PERÍODO DA ESCALA</p><div class="date-row"><fieldset><legend>De</legend><input id="dataInicio" type="date" value="2024-04-20"></fieldset><fieldset><legend>Até</legend><input id="dataFim" type="date" value="2024-04-30"></fieldset></div></div>
+    <div class="section"><p class="panel-title">PERÍODO DA ESCALA</p><div class="date-row"><fieldset><legend>De</legend><input id="dataInicio" type="date"></fieldset><fieldset><legend>Até</legend><input id="dataFim" type="date"></fieldset></div></div>
     <div class="section"><p class="panel-title">RESPONSÁVEIS (COLUNAS)</p><textarea id="pessoasTxt">VANILDA
 ALINE
 JULIANA
@@ -109,7 +109,42 @@ async function exportarJPG(){
 function gerarPDF(){renderizar();const antigo=document.title;document.title='ESCALA_'+periodo().replaceAll('/','-').replaceAll(' ','_');setTimeout(()=>{window.print();document.title=antigo},200)}
 function limparTudo(){document.querySelectorAll('.atv-check').forEach(c=>c.checked=false);renderizar()}
 function esc(s){return String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
-document.getElementById('dataInicio').addEventListener('change',renderizar);document.getElementById('dataFim').addEventListener('change',renderizar);document.getElementById('pessoasTxt').addEventListener('input',()=>{montarAtividades()});montarAtividades();
+
+function formatarDataInput(data){
+  const ano = data.getFullYear();
+  const mes = String(data.getMonth() + 1).padStart(2, '0');
+  const dia = String(data.getDate()).padStart(2, '0');
+  return `${ano}-${mes}-${dia}`;
+}
+
+function iniciarPeriodoAutomatico(){
+  const hoje = new Date();
+  const dataFinal = new Date(hoje);
+  dataFinal.setDate(hoje.getDate() + 15);
+
+  document.getElementById('dataInicio').value = formatarDataInput(hoje);
+  document.getElementById('dataFim').value = formatarDataInput(dataFinal);
+}
+
+document.getElementById('dataInicio').addEventListener('change', () => {
+  const inicio = document.getElementById('dataInicio').value;
+
+  if(inicio){
+    const dataInicio = new Date(inicio + 'T00:00:00');
+    const dataFinal = new Date(dataInicio);
+    dataFinal.setDate(dataInicio.getDate() + 15);
+    document.getElementById('dataFim').value = formatarDataInput(dataFinal);
+  }
+
+  renderizar();
+});
+
+document.getElementById('dataFim').addEventListener('change',renderizar);
+document.getElementById('pessoasTxt').addEventListener('input',()=>{montarAtividades()});
+
+iniciarPeriodoAutomatico();
+montarAtividades();
+
 </script>
 </body>
 </html>
