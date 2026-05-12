@@ -209,20 +209,56 @@ function matrizSetor(sec, ps){const mapa={};ps.forEach(p=>mapa[p]=[]);sec.ativid
 function td(txt){const c=String(txt||'');return `<td class="editable ${c.length>26?'mini':''}" contenteditable="true">${esc(c)}</td>`}
 function renderizar(){const ps=pessoas();if(!ps.length){document.getElementById('preview').innerHTML='<p>Informe pelo menos um responsável.</p>';return}let html='<table class="scale"><colgroup><col style="width:10%">'+ps.map(()=>'<col>').join('')+'</colgroup>';html+=`<tr class="title"><th colspan="${ps.length+1}">ESCALA DO DIA ${periodo()}</th></tr><tr class="names"><th></th>${ps.map(p=>`<th>${esc(p)}</th>`).join('')}</tr><tr class="bar"><td></td>${ps.map(()=>'<td></td>').join('')}</tr>`;setores.forEach((sec,sidx)=>{const mapa=matrizSetor(sec,ps);for(let r=0;r<sec.linhas;r++){html+=`<tr class="${sidx>0&&r===0?'thick-top':''}">`;if(r===0)html+=`<td class="sector" rowspan="${sec.linhas}">${esc(sec.nome)}</td>`;ps.forEach(p=>html+=td((mapa[p]||[])[r]||''));html+='</tr>'}});html+=`<tr class="thick-top"><td class="footer-label">ESTACIONAMENTO</td><td class="footer-value editable" colspan="${ps.length}" contenteditable="true">${esc(valoresSelecionados('estacionamento'))}</td></tr>`;html+=`<tr><td class="footer-label">HOSPITAL</td><td class="footer-value editable" colspan="${ps.length}" contenteditable="true">${esc(valoresSelecionados('hospital'))}</td></tr>`;html+=`<tr><td class="footer-label">MATÉRIAS</td><td class="footer-value editable" colspan="${ps.length}" contenteditable="true">${esc(valoresSelecionados('materiais'))}</td></tr></table>`;document.getElementById('preview').innerHTML=html}
 
+
 async function exportarJPG(){
   renderizar();
 
-  const area = document.querySelector('.scale-wrap');
+  const tabelaOriginal = document.querySelector('.scale');
+  if(!tabelaOriginal){
+    alert('Gere a escala antes de exportar.');
+    return;
+  }
 
-  const canvas = await html2canvas(area,{
-    scale:2,
-    useCORS:true,
-    backgroundColor:'#ffffff'
+  // Cria uma área temporária fora da tela para capturar a tabela completa,
+  // sem depender da rolagem horizontal do celular.
+  const areaTemp = document.createElement('div');
+  areaTemp.style.position = 'fixed';
+  areaTemp.style.left = '-10000px';
+  areaTemp.style.top = '0';
+  areaTemp.style.background = '#ffffff';
+  areaTemp.style.padding = '0';
+  areaTemp.style.margin = '0';
+  areaTemp.style.width = tabelaOriginal.scrollWidth + 'px';
+  areaTemp.style.overflow = 'visible';
+
+  const tabelaClone = tabelaOriginal.cloneNode(true);
+  tabelaClone.style.width = tabelaOriginal.scrollWidth + 'px';
+  tabelaClone.style.minWidth = tabelaOriginal.scrollWidth + 'px';
+  tabelaClone.style.maxWidth = 'none';
+  tabelaClone.style.height = 'auto';
+
+  areaTemp.appendChild(tabelaClone);
+  document.body.appendChild(areaTemp);
+
+  await new Promise(resolve => setTimeout(resolve, 300));
+
+  const canvas = await html2canvas(areaTemp, {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: '#ffffff',
+    width: areaTemp.scrollWidth,
+    height: areaTemp.scrollHeight,
+    windowWidth: areaTemp.scrollWidth,
+    windowHeight: areaTemp.scrollHeight,
+    scrollX: 0,
+    scrollY: 0
   });
+
+  document.body.removeChild(areaTemp);
 
   const link = document.createElement('a');
   link.download = 'ESCALA_'+periodo().replaceAll('/','-').replaceAll(' ','_')+'.jpg';
-  link.href = canvas.toDataURL('image/jpeg',1.0);
+  link.href = canvas.toDataURL('image/jpeg', 1.0);
   link.click();
 }
 
