@@ -13,6 +13,127 @@
 @page{size:A4 landscape;margin:4mm}
 @media(max-width:1050px){.layout{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid #dfe7ef}.content{padding:20px 10px}.appbar{align-items:flex-start;flex-direction:column}.top-actions{width:100%}.btn{flex:1}.scale-wrap{overflow:auto}.scale{min-width:1050px}}
 @media print{html,body{width:100%;height:100%;background:#fff;margin:0}.appbar,.sidebar,.notice,.no-print{display:none!important}.layout{display:block;min-height:auto}.content{padding:0;margin:0}.scale-wrap{width:100%;max-width:none;margin:0;background:#fff}.scale{width:100%;height:calc(100vh - 2mm);border-width:1.5px;page-break-inside:avoid}.scale .title th{font-size:22px;height:36px}.scale .names th{font-size:13px;height:24px}.scale .bar td{height:14px}.scale th,.scale td{font-size:9.6px;height:18px;padding:1.5px}.sector{font-size:15px!important}.footer-label{font-size:9.5px!important}.footer-value{font-size:11px!important}.mini{font-size:8.2px!important}}
+
+/* ===== MODO MOBILE AUTOMÁTICO ===== */
+.mobile-title{
+    display:none;
+}
+
+@media (max-width: 768px){
+
+    body{
+        overflow-x:hidden;
+    }
+
+    .layout{
+        display:flex !important;
+        flex-direction:column !important;
+    }
+
+    .sidebar{
+        width:100% !important;
+        border-right:0 !important;
+        border-bottom:1px solid #dfe7ef !important;
+        padding:16px !important;
+    }
+
+    .content{
+        width:100% !important;
+        padding:10px !important;
+    }
+
+    .appbar{
+        flex-direction:column !important;
+        align-items:flex-start !important;
+        gap:12px;
+        padding:16px !important;
+    }
+
+    .brand h1{
+        font-size:20px !important;
+    }
+
+    .top-actions{
+        width:100%;
+        display:grid !important;
+        grid-template-columns:1fr 1fr;
+        gap:8px;
+    }
+
+    .btn{
+        width:100%;
+        min-height:52px;
+        font-size:14px !important;
+        padding:12px !important;
+    }
+
+    .tools{
+        grid-template-columns:1fr !important;
+    }
+
+    .date-row{
+        grid-template-columns:1fr !important;
+    }
+
+    textarea{
+        min-height:120px;
+        font-size:16px;
+    }
+
+    input, select{
+        font-size:16px !important;
+    }
+
+    .activity-row{
+        grid-template-columns:26px 1fr !important;
+    }
+
+    .activity-row select{
+        grid-column:1 / -1;
+        margin-top:6px;
+    }
+
+    .final-checks{
+        grid-template-columns:1fr !important;
+    }
+
+    .final-checks input,
+    .activity-row input{
+        width:22px !important;
+        height:22px !important;
+    }
+
+    .scale-wrap{
+        overflow-x:auto !important;
+        -webkit-overflow-scrolling:touch;
+        border-radius:10px;
+    }
+
+    .scale{
+        min-width:980px !important;
+    }
+
+    .notice{
+        font-size:13px;
+        padding:12px;
+    }
+
+    .panel-title{
+        font-size:15px !important;
+    }
+
+    .tip{
+        font-size:13px;
+    }
+
+    .mobile-title{
+        display:block;
+        font-size:12px;
+        color:#fff;
+        opacity:.9;
+    }
+}
+
 </style>
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
