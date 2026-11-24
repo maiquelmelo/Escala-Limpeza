@@ -1,307 +1,83 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Gerador de Escala Setor de Limpeza</title>
-<style>
-:root{--teal:#319f9b;--teal-dark:#0d8e8a;--teal-soft:#e2f5f4;--line:#65c4c0;--orange:#f7941d;--text:#263238;--muted:#667085;--bg:#f5f8fb;--white:#fff}
-*{box-sizing:border-box;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
-.appbar{min-height:82px;background:linear-gradient(135deg,var(--teal),var(--teal-dark));color:#fff;display:flex;align-items:center;justify-content:space-between;padding:16px 22px;box-shadow:0 3px 12px rgba(0,0,0,.12)}
-.brand{display:flex;gap:14px;align-items:center}.brand-icon{width:38px;height:38px;border:2px solid rgba(255,255,255,.7);border-radius:8px;display:grid;place-items:center;font-size:22px}.brand h1{font-size:25px;line-height:1;margin:0}.brand small{display:block;margin-top:6px;font-weight:bold;letter-spacing:.4px}.top-actions{display:flex;gap:12px;flex-wrap:wrap}.btn{border:0;border-radius:7px;padding:12px 16px;background:#fff;color:var(--teal-dark);font-weight:800;cursor:pointer;box-shadow:0 2px 7px rgba(0,0,0,.12)}.btn.primary{background:linear-gradient(135deg,var(--teal),var(--teal-dark));color:#fff}.btn.light{background:#eefafa;color:var(--teal-dark);box-shadow:none;border:1px solid #bde8e6}.btn.danger{background:#fff1f1;color:#9f1d1d}.btn:hover{filter:brightness(.98)}
-.layout{display:grid;grid-template-columns:420px 1fr;min-height:calc(100vh - 82px)}.sidebar{background:#fff;border-right:1px solid #dfe7ef;padding:22px 24px;overflow:auto}.content{padding:34px 24px}.panel-title{font-size:14px;font-weight:900;letter-spacing:.35px;margin:0 0 14px;color:#334}.section{border-bottom:1px solid #e5e9ef;padding:0 0 20px;margin-bottom:20px}.date-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}fieldset{border:1px solid #e2e8f0;border-radius:6px;padding:7px 10px 9px;margin:0}legend{font-size:12px;color:#667085;padding:0 6px}input,select,textarea{width:100%;border:0;outline:0;background:#fff;font-size:15px;color:#344054}textarea{border:1px solid #e2e8f0;border-radius:7px;padding:10px;min-height:96px;resize:vertical}.check{display:flex;gap:10px;align-items:center;margin:10px 0;color:#4a5568}.check input{width:17px;height:17px;accent-color:var(--teal)}.tools{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.activity-box{border:1px solid #e2e8f0;border-radius:10px;margin:10px 0;overflow:hidden;background:#fbffff}.activity-head{background:#edfafa;color:var(--teal-dark);font-weight:900;padding:10px 12px;display:flex;align-items:center;justify-content:space-between}.activity-list{padding:8px 10px}.activity-row{display:grid;grid-template-columns:24px 1fr 130px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed #d4eeee}.activity-row:last-child{border-bottom:0}.activity-row input{width:17px;height:17px;accent-color:var(--teal)}.activity-row span{font-size:13px;font-weight:700}.activity-row select{border:1px solid #e2e8f0;border-radius:6px;padding:7px;font-size:12px}.final-row{display:grid;grid-template-columns:126px 1fr;align-items:center;gap:10px;margin:12px 0}.final-row label{font-size:13px;color:#48505d;font-weight:800}.selectbox{border:1px solid #e2e8f0;border-radius:6px;padding:9px 10px;background:#fff}.final-check-group{border:1px solid #e2e8f0;border-radius:8px;background:#fbffff;padding:10px 12px;margin:12px 0}.final-title{display:block;font-size:13px;color:#48505d;font-weight:900;margin-bottom:8px}.final-checks{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px}.final-checks label{display:flex;align-items:center;gap:7px;font-size:13px;color:#344054;font-weight:700}.final-checks input{width:16px;height:16px;accent-color:var(--teal)}.generate{width:100%;margin-top:12px}.tip{margin-top:24px;border:1px solid #cbe3ff;background:#edf7ff;border-radius:8px;padding:14px;color:#164c91;font-size:13px;line-height:1.5}.tip b{display:block;margin-bottom:6px;font-size:15px}.notice{border:1px solid #cbe3ff;background:#edf7ff;border-radius:7px;padding:14px 18px;margin-bottom:22px;color:#164c91;font-size:14px}.scale-wrap{background:#fff;width:100%;max-width:1500px;margin:auto}.scale{width:100%;border-collapse:collapse;table-layout:fixed;background:#dff3f2;border:2px solid var(--line);font-weight:800}.scale th,.scale td{border:1px solid var(--line);text-align:center;vertical-align:middle;padding:3px 4px;height:24px;font-size:12px;line-height:1.12}.scale .title th{height:48px;background:var(--teal);color:#fff;font-size:25px;letter-spacing:.5px}.scale .names th{background:#fff;color:var(--teal-dark);font-size:16px;height:32px}.scale .bar td{height:18px;background:var(--orange);padding:0}.sector{color:var(--teal-dark);font-size:20px!important;background:#d8efee}.thick-top td,.thick-top th{border-top:3px solid var(--teal-dark)!important}.footer-label{color:var(--teal-dark);font-size:12px!important;background:#d8efee}.footer-value{font-size:14px!important}.editable{cursor:pointer}.editable:hover{background:#d5f1ef}.mini{font-size:10px!important;white-space:nowrap}.muted{color:#667085;font-size:12px;line-height:1.4;margin-top:6px}
-@page{size:A4 landscape;margin:4mm}
-@media(max-width:1050px){.layout{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid #dfe7ef}.content{padding:20px 10px}.appbar{align-items:flex-start;flex-direction:column}.top-actions{width:100%}.btn{flex:1}.scale-wrap{overflow:auto}.scale{min-width:1050px}}
-@media print{html,body{width:100%;height:100%;background:#fff;margin:0}.appbar,.sidebar,.notice,.no-print{display:none!important}.layout{display:block;min-height:auto}.content{padding:0;margin:0}.scale-wrap{width:100%;max-width:none;margin:0;background:#fff}.scale{width:100%;height:calc(100vh - 2mm);border-width:1.5px;page-break-inside:avoid}.scale .title th{font-size:22px;height:36px}.scale .names th{font-size:13px;height:24px}.scale .bar td{height:14px}.scale th,.scale td{font-size:9.6px;height:18px;padding:1.5px}.sector{font-size:15px!important}.footer-label{font-size:9.5px!important}.footer-value{font-size:11px!important}.mini{font-size:8.2px!important}}
-
-/* ===== MODO MOBILE AUTOMÁTICO ===== */
-.mobile-title{
-    display:none;
-}
-
-@media (max-width: 768px){
-
-    body{
-        overflow-x:hidden;
-    }
-
-    .layout{
-        display:flex !important;
-        flex-direction:column !important;
-    }
-
-    .sidebar{
-        width:100% !important;
-        border-right:0 !important;
-        border-bottom:1px solid #dfe7ef !important;
-        padding:16px !important;
-    }
-
-    .content{
-        width:100% !important;
-        padding:10px !important;
-    }
-
-    .appbar{
-        flex-direction:column !important;
-        align-items:flex-start !important;
-        gap:12px;
-        padding:16px !important;
-    }
-
-    .brand h1{
-        font-size:20px !important;
-    }
-
-    .top-actions{
-        width:100%;
-        display:grid !important;
-        grid-template-columns:1fr 1fr;
-        gap:8px;
-    }
-
-    .btn{
-        width:100%;
-        min-height:52px;
-        font-size:14px !important;
-        padding:12px !important;
-    }
-
-    .tools{
-        grid-template-columns:1fr !important;
-    }
-
-    .date-row{
-        grid-template-columns:1fr !important;
-    }
-
-    textarea{
-        min-height:120px;
-        font-size:16px;
-    }
-
-    input, select{
-        font-size:16px !important;
-    }
-
-    .activity-row{
-        grid-template-columns:26px 1fr !important;
-    }
-
-    .activity-row select{
-        grid-column:1 / -1;
-        margin-top:6px;
-    }
-
-    .final-checks{
-        grid-template-columns:1fr !important;
-    }
-
-    .final-checks input,
-    .activity-row input{
-        width:22px !important;
-        height:22px !important;
-    }
-
-    .scale-wrap{
-        overflow-x:auto !important;
-        -webkit-overflow-scrolling:touch;
-        border-radius:10px;
-    }
-
-    .scale{
-        min-width:980px !important;
-    }
-
-    .notice{
-        font-size:13px;
-        padding:12px;
-    }
-
-    .panel-title{
-        font-size:15px !important;
-    }
-
-    .tip{
-        font-size:13px;
-    }
-
-    .mobile-title{
-        display:block;
-        font-size:12px;
-        color:#fff;
-        opacity:.9;
-    }
-}
-
-</style>
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-</head>
-<body>
-<header class="appbar no-print">
-  <div class="brand"><div class="brand-icon">▣</div><div><h1>GERADOR DE ESCALA SETOR DE LIMPEZA</h1></div></div>
-  <div class="top-actions"><button class="btn" onclick="gerarPDF()">⬇ GERAR PDF HORIZONTAL</button><button class="btn" onclick="renderizar()">↻ ATUALIZAR</button><button class="btn" onclick="exportarJPG()">🖼 EXPORTAR JPG</button><button class="btn" onclick="limparTudo()">🗑 LIMPAR</button></div>
-</header>
-<div class="layout">
-  <aside class="sidebar no-print">
-    <div class="section"><p class="panel-title">PERÍODO DA ESCALA</p><div class="date-row"><fieldset><legend>De</legend><input id="dataInicio" type="date"></fieldset><fieldset><legend>Até</legend><input id="dataFim" type="date"></fieldset></div></div>
-    <div class="section"><p class="panel-title">RESPONSÁVEIS (COLUNAS)</p><textarea id="pessoasTxt">VANILDA
-ALINE
-JULIANA
-JUCILEIA
-MARIA</textarea><div class="muted">Uma pessoa por linha. Esses nomes viram as colunas da escala e as opções de responsável.</div></div>
-    <div class="section"><p class="panel-title">SELECIONAR ATIVIDADES</p><div class="tools"><button class="btn light" onclick="marcarAtividades(true)">Marcar todas</button><button class="btn light" onclick="marcarAtividades(false)">Limpar atividades</button></div><div id="atividadesBox"></div></div>
-    <div class="section"><p class="panel-title">INFORMAÇÕES FINAIS</p>
-<div class="final-check-group">
-  <label class="final-title">ESTACIONAMENTO</label>
-  <div id="estacionamento" class="final-checks"></div>
-</div>
-<div class="final-check-group">
-  <label class="final-title">HOSPITAL</label>
-  <div id="hospital" class="final-checks"></div>
-</div>
-<div class="final-check-group">
-  <label class="final-title">MATÉRIAS</label>
-  <div id="materiais" class="final-checks"></div>
-</div>
-<div class="muted">Marque uma ou mais responsáveis em cada informação final.</div>
-<button class="btn primary generate" onclick="renderizar()">▣ GERAR ESCALA</button></div>
-    <div class="tip"><b>ⓘ Dica</b> Selecione as atividades e defina o responsável ao lado. A visualização final fica em formato de colunas, parecida com o modelo enviado.</div>
-  </aside>
-  <main class="content"><div class="notice no-print">ⓘ Confira a prévia abaixo. Você pode clicar em qualquer célula da tabela para ajustar o texto antes de gerar o PDF.</div><div class="scale-wrap" id="preview"></div></main>
-</div>
-<script>
-const setores = [
- {id:'p1', nome:'1° PISO', linhas:13, atividades:["ATM'S",'CAFÉ','MESAS','VIDROS','GERENTES','PISO VERDE','GIRATORIAS','ESCADA','AMADEIRADO','BANHEIROS','ELEVADOR','BANHEIROS','LIMPEZA AR CONDICIONADO','LIMPAR VIDROS COZINHA',"LIMPAR TV'S",'LIMPAR TROFÉUS','VITRINE SOLIDÁRIA']},
- {id:'p2', nome:'2° PISO', linhas:9, atividades:['CAIXA','PISO VERDE','GERENTES 1,2,3,4','RETAGUARDA','GERENTES 5,6,7,8,9,10,11','PISO VERDE','COMPRAS','CENTRAL DE NEGÓCIOS','SALA DE REUNIÃO','BANHEIROS','GERENTES 12,13,14,15','SIPAG','BANHEIROS','LIMPEZA AR CONDICIONADO','LIMPAR VIDROS COZINHA',"LIMPAR TV'S",'LIMPAR TROFÉUS']},
- {id:'pc', nome:'PÓS CAFÉ', linhas:7, atividades:['VARRER AGENCIA','COZINHA','CEDOC','COZINHA','SALA DE DESCANSO','ALMOÇO','PLANTAS 1X','COZINHA',"ATM'S 1X","GUARDA VOLUMES E ATM'S",'GELADEIRA E ARMÁRIOS','DIVISÓRIAS E VIDROS','CORTINAS E ARMÁRIOS','VITRINE SOLIDÁRIA']}
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gerador de Escala Setor de Limpeza 2.1</title><style>
+:root{--green:#188f8d;--dark:#0a6e6b;--pale:#e0f4f3;--orange:#f7941d;--ink:#253444;--muted:#5c6c7b;--line:#cbdde1}*{box-sizing:border-box}body{margin:0;background:#f3f7f8;color:var(--ink);font:16px Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer}header{background:var(--green);color:white;padding:17px max(18px,calc((100vw - 1160px)/2));display:flex;justify-content:space-between;align-items:center;gap:10px}header strong{font-size:21px}header small{display:block;font-size:12px;margin-top:4px}main{max-width:1160px;margin:22px auto;padding:0 16px}.panel{background:white;border:1px solid #e1e9ed;border-radius:14px;padding:22px;box-shadow:0 2px 9px #163b4510;margin-bottom:16px}.hero{text-align:center;padding:38px 20px}.hero h1{font-size:29px;margin:0 0 10px}.hero p{color:var(--muted);margin:0 auto 24px;max-width:540px;line-height:1.5}.btn{background:white;color:var(--dark);border:1px solid #a6d9d6;border-radius:9px;padding:12px 16px;font-weight:700;min-height:46px}.btn.primary{background:var(--green);color:white;border-color:var(--green)}.btn.secondary{background:#e9f6f5}.btn.danger{color:#a72a2a;border-color:#e5b5b5}.btn:disabled{opacity:.5;cursor:not-allowed}.big{font-size:19px;min-height:66px;min-width:260px}.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}.hidden{display:none!important}.topline{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.stepnav{display:flex;gap:6px;margin:15px 0 22px}.stepnav span{flex:1;background:#e4ecee;padding:11px 5px;text-align:center;border-radius:8px;font-size:13px;font-weight:700;color:#586b71}.stepnav span.active{background:var(--green);color:white}.stepnav span.done{background:#c8e8e5;color:var(--dark)}h2{font-size:23px;margin:0 0 12px}h3{margin:0 0 12px;font-size:18px}.hint{color:var(--muted);font-size:14px;line-height:1.5;margin:6px 0 16px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field label{display:block;font-weight:700;margin-bottom:8px}.field input,.field select{width:100%;padding:13px;border:1px solid var(--line);border-radius:8px;background:white}.choice-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}.choice{display:flex;align-items:center;gap:11px;padding:14px;border:1px solid var(--line);border-radius:10px;font-weight:700;cursor:pointer;background:#fff}.choice:has(input:checked){background:#e8f7f5;border-color:var(--green)}input[type=checkbox]{width:21px;height:21px;accent-color:var(--green);flex:none}.foot{display:flex;justify-content:space-between;gap:12px;margin-top:24px}.sector-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.sector-tabs button.active{background:var(--green);color:white}.task{display:grid;grid-template-columns:28px minmax(130px,1fr) minmax(150px,220px);gap:12px;align-items:center;padding:11px 8px;border-bottom:1px solid #e8eef0}.task select{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;background:white}.task strong{font-size:14px}.final-groups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.final-group{padding:14px;border:1px solid var(--line);border-radius:10px}.final-group h3{color:var(--dark)}.final-group .choice{padding:9px;border:0}.notice{padding:12px 14px;background:#edf7ff;color:#215079;border-radius:8px;font-size:14px;margin-bottom:14px}.preview-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;background:white}.scale{width:100%;border-collapse:collapse;table-layout:fixed;background:var(--pale);border:2px solid #63c1bd;font-weight:bold;min-width:950px}.scale th,.scale td{border:1px solid #68c4c0;text-align:center;vertical-align:middle;padding:5px 3px;font-size:12px;overflow-wrap:anywhere}.scale .title th{background:var(--green);color:white;font-size:24px;padding:12px}.scale .names th{background:white;color:var(--dark);font-size:15px;padding:9px}.scale .bar td{background:var(--orange);height:16px;padding:0}.scale .sector{color:var(--dark);font-size:19px;background:#d8efee;width:11%}.scale .thick td{border-top:3px solid var(--green)}.scale .footerlabel{color:var(--dark);background:#d8efee}.scale .footer td{padding:8px}.scale [contenteditable]{cursor:text}.scale [contenteditable]:focus{outline:2px solid var(--orange)}.listrow{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid #e8edef;padding:10px 0}.listrow .actions{justify-content:flex-end}.tag{background:#e8f7f5;color:var(--dark);padding:5px 8px;border-radius:6px;font-size:12px}.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.addrow{display:flex;gap:8px;margin:10px 0}.addrow input,.addrow select{min-width:0;flex:1;border:1px solid var(--line);border-radius:8px;padding:10px}.small{font-size:13px}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#193e42;color:white;padding:13px 18px;border-radius:9px;box-shadow:0 5px 20px #0003;z-index:9}.toolbar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:18px 0}.warning{color:#9d4b12}.note{font-size:12px;color:var(--muted);line-height:1.5} @media(max-width:700px){header{padding:13px 16px}header strong{font-size:17px}main{margin:12px auto;padding:0 9px}.panel{padding:16px}.hero{padding:30px 14px}.hero h1{font-size:24px}.big{width:100%;min-width:0}.actions{flex-direction:column}.actions .btn{width:100%}.fields,.final-groups,.settings-grid{grid-template-columns:1fr}.task{grid-template-columns:26px 1fr}.task select{grid-column:2}.foot .btn{flex:1}.stepnav span{font-size:11px}.toolbar .btn{flex:1}.topline h2{font-size:20px}.scale{min-width:950px}}@page{size:A4 landscape;margin:5mm}@media print{body{background:white}header,.noprint,#home,#wizard,#settings,#saved{display:none!important}main{max-width:none;margin:0;padding:0}.panel{padding:0;border:0;box-shadow:none;margin:0}.preview-scroll{overflow:visible!important}.scale{min-width:0!important;width:100%;font-size:9px;page-break-inside:avoid}.scale th,.scale td{font-size:8px;padding:2px}.scale .title th{font-size:19px;padding:6px}.scale .names th{font-size:12px;padding:5px}.scale .sector{font-size:13px}.scale .footer td{padding:4px}*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}
+</style></head><body><header class="noprint"><div><strong>GERADOR DE ESCALA</strong><small>SETOR DE LIMPEZA · VERSÃO 2.1</small></div><button class="btn" onclick="go('home')">⌂ Início</button></header><main>
+<section id="home" class="panel hero"><h1>O que deseja fazer?</h1><p>Monte a escala de limpeza de maneira simples, seguindo as etapas na tela.</p><div class="actions"><button class="btn primary big" onclick="novaEscala()">＋ Criar nova escala</button><button class="btn big" onclick="abrirSalvas()">▣ Abrir escala salva</button><button class="btn big secondary" onclick="abrirConfiguracoes()">⚙ Configurações</button></div><p class="note" style="margin-top:26px">As escalas ficam salvas neste navegador. Não são sincronizadas entre aparelhos.</p></section>
+<section id="wizard" class="hidden"><div class="panel"><div class="topline"><h2 id="stepTitle">Criar escala</h2><span class="tag" id="autosaveLabel">Salvamento automático</span></div><div class="stepnav"><span id="nav1">1. Período</span><span id="nav2">2. Pessoas</span><span id="nav3">3. Atividades</span><span id="nav4">4. Finalizar</span></div>
+<div id="step1"><p class="hint">As datas já estão preenchidas. Só altere se precisar.</p><div class="fields"><div class="field"><label for="dataInicio">Data de início</label><input type="date" id="dataInicio" onchange="mudarInicio()"></div><div class="field"><label for="dataFim">Data final</label><input type="date" id="dataFim" onchange="autosave()"></div></div></div>
+<div id="step2" class="hidden"><p class="hint">Marque as pessoas que vão trabalhar nesta escala.</p><div class="choice-grid" id="pessoasBox"></div></div>
+<div id="step3" class="hidden"><p class="hint">Marque as atividades e escolha quem será responsável. Você pode avançar por piso.</p><div class="sector-tabs" id="sectorTabs"></div><div id="tasksBox"></div></div>
+<div id="step4" class="hidden"><p class="hint">Escolha as responsáveis pelas informações finais. É possível marcar várias pessoas.</p><div class="final-groups" id="finaisBox"></div><div class="toolbar"><button class="btn primary" onclick="verPrevia()">✓ Conferir escala pronta</button></div></div>
+<div class="foot"><button class="btn" id="prevBtn" onclick="voltarEtapa()">← Voltar</button><button class="btn primary" id="nextBtn" onclick="proximaEtapa()">Continuar →</button></div></div></section>
+<section id="previewPage" class="hidden"><div class="panel"><div class="topline noprint"><div><h2>Escala pronta</h2><p class="hint">Confira as informações. Para corrigir, toque em “Voltar e editar”.</p></div><button class="btn" onclick="voltarDaPrevia()">← Voltar e editar</button></div><div class="notice noprint">Para exportar a imagem inteira no celular, utilize os botões JPG ou PNG. Você também pode editar o texto diretamente na prévia; essas edições são apenas visuais e não são salvas no modelo.</div><div class="preview-scroll" id="captureArea"><div id="preview"></div></div><div class="toolbar noprint"><button class="btn primary" onclick="salvarEscala()">💾 Salvar escala</button><button class="btn" onclick="exportar('jpg')">🖼 JPG</button><button class="btn" onclick="exportar('png')">🖼 PNG</button><button class="btn" onclick="gerarPDF()">⬇ PDF horizontal</button></div></div></section>
+<section id="saved" class="panel hidden"><div class="topline"><h2>Escalas salvas</h2><button class="btn" onclick="go('home')">← Voltar</button></div><p class="hint">Escolha uma escala para continuar de onde parou.</p><div id="salvasLista"></div></section>
+<section id="settings" class="panel hidden"><div class="topline"><h2>Configurações</h2><button class="btn" onclick="go('home')">← Voltar</button></div><p class="hint">Altere nomes e atividades somente quando necessário. As mudanças ficam salvas neste aparelho.</p><div class="settings-grid"><div><h3>Colaboradoras</h3><div id="listaPessoas"></div><div class="addrow"><input id="novaPessoa" placeholder="Nome da colaboradora"><button class="btn primary" onclick="adicionarPessoa()">Adicionar</button></div></div><div><h3>Atividades por setor</h3><div class="addrow"><select id="setorConfig" onchange="renderConfigAtividades()"></select></div><div id="listaAtividades"></div><div class="addrow"><input id="novaAtividade" placeholder="Nova atividade"><button class="btn primary" onclick="adicionarAtividade()">Adicionar</button></div></div></div><hr style="border:0;border-top:1px solid #e6edef;margin:24px 0"><h3>Modelos e segurança dos dados</h3><p class="hint">O modelo atual pode ser reutilizado na próxima escala. Também é possível criar um arquivo de backup.</p><div class="toolbar"><button class="btn" onclick="salvarModelo()">Salvar modelo atual</button><button class="btn" onclick="carregarModelo()">Usar modelo salvo</button><button class="btn" onclick="baixarBackup()">Baixar backup JSON</button><label class="btn" style="display:inline-flex;align-items:center">Importar backup <input type="file" accept=".json,application/json" style="display:none" onchange="importarBackup(event)"></label></div></section>
+<div id="toast" class="toast hidden" role="status"></div></main><script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script><script>
+const SETORES_PADRAO = [
+ {id:'p1', nome:'1° PISO', linhas:13, atividades:["ATM'S",'CAFÉ','MESAS','VIDROS','GERENTES','PISO VERDE','GIRATORIAS','ESCADA','AMADEIRADO','BANHEIROS','ELEVADOR','BANHEIROS','LIMPEZA AR CONDICIONADO','LIMPAR VIDROS COZINHA',"LIMPAR TV'S",'LIMPAR TROFÉUS','LIMPEZA TAPETE ENTRADA','LIMPEZA ÁREA DE SERVIÇO','LIMPEZA VITRINE SOLIDÁRIA']},
+ {id:'p2', nome:'2° PISO', linhas:9, atividades:['CAIXA','PISO VERDE','GERENTES 1,2,3,4','RETAGUARDA','GERENTES 5,6,7,8,9,10,11','PISO VERDE','COMPRAS','CENTRAL DE NEGÓCIOS','SALA DE REUNIÃO','BANHEIROS','ATENDIMENTO','SIPAG','BANHEIROS','LIMPEZA AR CONDICIONADO','LIMPAR VIDROS COZINHA',"LIMPAR TV'S",'LIMPAR TROFÉUS']},
+ {id:'pc', nome:'PÓS CAFÉ', linhas:7, atividades:['VARRER AGENCIA','COZINHA','CEDOC','COZINHA','SALA DE DESCANSO','ALMOÇO','PLANTAS 1X','COZINHA',"ATM'S 1X","GUARDA VOLUMES E ATM'S",'GELADEIRA E ARMÁRIOS','DIVISÓRIAS E VIDROS','CORTINAS E ARMÁRIOS']}
 ];
+
 const padrao = {"p1__0":"VANILDA","p1__1":"ALINE","p1__2":"JUCILEIA","p1__3":"VANILDA","p1__4":"ALINE","p1__5":"JUCILEIA","p1__6":"VANILDA","p1__7":"ALINE","p1__8":"JUCILEIA","p1__9":"ALINE","p1__10":"JUCILEIA","p1__11":"JUCILEIA","p2__0":"VANILDA","p2__1":"JULIANA","p2__2":"MARIA","p2__3":"VANILDA","p2__4":"JULIANA","p2__5":"MARIA","p2__6":"VANILDA","p2__7":"JULIANA","p2__8":"MARIA","p2__9":"JULIANA","p2__10":"MARIA","p2__11":"JULIANA","p2__12":"MARIA","pc__0":"VANILDA","pc__1":"ALINE","pc__2":"JULIANA","pc__3":"JUCILEIA","pc__4":"MARIA","pc__5":"VANILDA","pc__6":"ALINE","pc__7":"JULIANA","pc__8":"JUCILEIA","pc__9":"MARIA","pc__10":"ALINE","pc__11":"JULIANA","pc__12":"JUCILEIA"};
-function pessoas(){return document.getElementById('pessoasTxt').value.split('\n').map(x=>x.trim()).filter(Boolean)}
-function opts(sel=''){let ps=pessoas();let extra=sel&&!ps.includes(sel)?`<option selected>${esc(sel)}</option>`:'';return '<option value="">--</option>'+ps.map(p=>`<option ${p===sel?'selected':''}>${esc(p)}</option>`).join('')+extra}
-function montarAtividades(){const box=document.getElementById('atividadesBox');box.innerHTML='';setores.forEach(sec=>{let html=`<div class="activity-box"><div class="activity-head"><span>${sec.nome}</span><label class="check" style="margin:0;font-weight:normal"><input type="checkbox" checked onchange="toggleSetor('${sec.id}',this.checked)"> Todos</label></div><div class="activity-list">`;sec.atividades.forEach((a,i)=>{const id=sec.id+'__'+i;html+=`<div class="activity-row"><input type="checkbox" class="atv-check" id="chk_${id}" data-id="${id}" checked onchange="renderizar()"><span>${esc(a)}</span><select id="resp_${id}" onchange="renderizar()">${opts(padrao[id]||'')}</select></div>`});html+='</div></div>';box.insertAdjacentHTML('beforeend',html)});montarSelectsFinais();renderizar()}
-function montarSelectsFinais(){
-  montarChecksFinais('estacionamento',['ALINE']);
-  montarChecksFinais('hospital',['JUCILEIA','JULIANA']);
-  montarChecksFinais('materiais',['VANILDA','JUCILEIA']);
-}
-function montarChecksFinais(id, selecionados=[]){
-  const el=document.getElementById(id);
-  const ps=pessoas();
-  el.innerHTML=ps.map(p=>`
-    <label>
-      <input type="checkbox" value="${esc(p)}" ${selecionados.includes(p)?'checked':''} onchange="renderizar()">
-      ${esc(p)}
-    </label>
-  `).join('');
-}
-function valoresSelecionados(id){
-  const el=document.getElementById(id);
-  return Array.from(el.querySelectorAll('input[type="checkbox"]:checked'))
-    .map(c=>c.value)
-    .filter(Boolean)
-    .join(' / ');
-}
-function toggleSetor(id,v){document.querySelectorAll(`[data-id^="${id}__"]`).forEach(c=>c.checked=v);renderizar()}
-function marcarAtividades(v){document.querySelectorAll('.atv-check').forEach(c=>c.checked=v);renderizar()}
-function periodo(){const di=document.getElementById('dataInicio').value.split('-'),df=document.getElementById('dataFim').value.split('-');return di.length===3&&df.length===3?`${di[2]}/${di[1]} a ${df[2]}/${df[1]}`:'20/04 a 30/04'}
-function matrizSetor(sec, ps){const mapa={};ps.forEach(p=>mapa[p]=[]);sec.atividades.forEach((a,i)=>{const id=sec.id+'__'+i;const chk=document.getElementById('chk_'+id);if(!chk||!chk.checked)return;const resp=document.getElementById('resp_'+id)?.value||'';if(resp){if(!mapa[resp])mapa[resp]=[];mapa[resp].push(a)}});return mapa}
-function td(txt){const c=String(txt||'');return `<td class="editable ${c.length>26?'mini':''}" contenteditable="true">${esc(c)}</td>`}
-function renderizar(){const ps=pessoas();if(!ps.length){document.getElementById('preview').innerHTML='<p>Informe pelo menos um responsável.</p>';return}let html='<table class="scale"><colgroup><col style="width:10%">'+ps.map(()=>'<col>').join('')+'</colgroup>';html+=`<tr class="title"><th colspan="${ps.length+1}">ESCALA DO DIA ${periodo()}</th></tr><tr class="names"><th></th>${ps.map(p=>`<th>${esc(p)}</th>`).join('')}</tr><tr class="bar"><td></td>${ps.map(()=>'<td></td>').join('')}</tr>`;setores.forEach((sec,sidx)=>{const mapa=matrizSetor(sec,ps);for(let r=0;r<sec.linhas;r++){html+=`<tr class="${sidx>0&&r===0?'thick-top':''}">`;if(r===0)html+=`<td class="sector" rowspan="${sec.linhas}">${esc(sec.nome)}</td>`;ps.forEach(p=>html+=td((mapa[p]||[])[r]||''));html+='</tr>'}});html+=`<tr class="thick-top"><td class="footer-label">ESTACIONAMENTO</td><td class="footer-value editable" colspan="${ps.length}" contenteditable="true">${esc(valoresSelecionados('estacionamento'))}</td></tr>`;html+=`<tr><td class="footer-label">HOSPITAL</td><td class="footer-value editable" colspan="${ps.length}" contenteditable="true">${esc(valoresSelecionados('hospital'))}</td></tr>`;html+=`<tr><td class="footer-label">MATÉRIAS</td><td class="footer-value editable" colspan="${ps.length}" contenteditable="true">${esc(valoresSelecionados('materiais'))}</td></tr></table>`;document.getElementById('preview').innerHTML=html}
 
-
-async function exportarJPG(){
-  renderizar();
-
-  const tabelaOriginal = document.querySelector('.scale');
-  if(!tabelaOriginal){
-    alert('Gere a escala antes de exportar.');
-    return;
+const KEY='escala_limpeza_21';const clone=x=>JSON.parse(JSON.stringify(x));const $=id=>document.getElementById(id);const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const hoje=()=>{let d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')};const mais15=v=>{let [y,m,d]=v.split('-').map(Number);let dt=new Date(y,m-1,d+15);return [dt.getFullYear(),String(dt.getMonth()+1).padStart(2,'0'),String(dt.getDate()).padStart(2,'0')].join('-')};const dadosIniciais=()=>({pessoas:['VANILDA','ALINE','JULIANA','JUCILEIA','MARIA'],setores:clone(SETORES_PADRAO),inicio:hoje(),fim:mais15(hoje()),selecionadas:['VANILDA','ALINE','JULIANA','JUCILEIA','MARIA'],atividades:{},finais:{estacionamento:['ALINE'],hospital:['JUCILEIA','JULIANA'],materiais:['VANILDA','JUCILEIA']}});
+let banco;try{banco=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}if(!banco||!banco.atual)banco={atual:dadosIniciais(),salvas:[],modelo:null};let state=banco.atual;let etapa=1,setorAtivo='p1';
+function aviso(t){$('toast').textContent=t;$('toast').classList.remove('hidden');clearTimeout(aviso.timer);aviso.timer=setTimeout(()=>$('toast').classList.add('hidden'),3000)}
+function persist(){banco.atual=state;try{localStorage.setItem(KEY,JSON.stringify(banco));$('autosaveLabel').textContent='✓ Salvo neste navegador'}catch(e){$('autosaveLabel').textContent='Não foi possível salvar';aviso('Espaço de armazenamento indisponível')}}
+function autosave(){state.inicio=$('dataInicio').value;state.fim=$('dataFim').value;persist()}
+function go(id){['home','wizard','previewPage','saved','settings'].forEach(k=>$(k).classList.toggle('hidden',k!==id));window.scrollTo(0,0)}
+function novaEscala(){let base=banco.modelo?clone(banco.modelo):dadosIniciais();base.inicio=hoje();base.fim=mais15(base.inicio);state=base;etapa=1;persist();mostrarEtapa();go('wizard')}
+function mudarInicio(){if($('dataInicio').value)$('dataFim').value=mais15($('dataInicio').value);autosave()}
+function mostrarEtapa(){for(let i=1;i<=4;i++){$('step'+i).classList.toggle('hidden',i!==etapa);$('nav'+i).className=i===etapa?'active':i<etapa?'done':''}$('stepTitle').textContent=['','Escolha o período','Escolha as colaboradoras','Distribua as atividades','Informações finais'][etapa];$('prevBtn').textContent=etapa===1?'← Início':'← Voltar';$('nextBtn').textContent=etapa===4?'Conferir escala →':'Continuar →';$('dataInicio').value=state.inicio;$('dataFim').value=state.fim;if(etapa===2)renderPessoas();if(etapa===3)renderTarefas();if(etapa===4)renderFinais()}
+function voltarEtapa(){if(etapa===1){go('home');return}etapa--;mostrarEtapa()}
+function proximaEtapa(){if(etapa===1){autosave();if(!state.inicio||!state.fim||state.fim<state.inicio){aviso('Confira as datas do período.');return}}if(etapa===2&&!state.selecionadas.length){aviso('Selecione pelo menos uma colaboradora.');return}if(etapa===4){verPrevia();return}etapa++;mostrarEtapa()}
+function renderPessoas(){$('pessoasBox').innerHTML=state.pessoas.map((p,i)=>`<label class="choice"><input type="checkbox" ${state.selecionadas.includes(p)?'checked':''} onchange="selecionarPessoa(${i},this.checked)">${safe(p)}</label>`).join('')}
+function selecionarPessoa(i,checked){let p=state.pessoas[i];state.selecionadas=checked?[...new Set([...state.selecionadas,p])]:state.selecionadas.filter(x=>x!==p);persist()}
+function getAtv(sec,i){const id=sec.id+'__'+i;return state.atividades[id]||{on:true,pessoa:padrao[id]||''}}
+function renderTarefas(){let selected=state.setores.find(s=>s.id===setorAtivo)||state.setores[0];setorAtivo=selected.id;$('sectorTabs').innerHTML=state.setores.map(s=>`<button class="btn ${s.id===setorAtivo?'active':''}" onclick="setorAtivo='${s.id}';renderTarefas()">${safe(s.nome)}</button>`).join('');$('tasksBox').innerHTML=selected.atividades.map((a,i)=>{let v=getAtv(selected,i);return `<div class="task"><input type="checkbox" aria-label="Ativar ${safe(a)}" ${v.on?'checked':''} onchange="setAtv('${selected.id}',${i},'on',this.checked)"><strong>${safe(a)}</strong><select aria-label="Responsável por ${safe(a)}" onchange="setAtv('${selected.id}',${i},'pessoa',this.value)"><option value="">Escolher responsável</option>${state.selecionadas.map(p=>`<option value="${safe(p)}" ${v.pessoa===p?'selected':''}>${safe(p)}</option>`).join('')}</select></div>`}).join('')}
+function setAtv(id,i,campo,valor){let sec=state.setores.find(s=>s.id===id);let key=id+'__'+i;state.atividades[key]={...getAtv(sec,i),[campo]:valor};persist()}
+function renderFinais(){$('finaisBox').innerHTML=[['estacionamento','ESTACIONAMENTO'],['hospital','HOSPITAL'],['materiais','MATÉRIAS']].map(([id,label])=>`<div class="final-group"><h3>${label}</h3>${state.selecionadas.map(p=>`<label class="choice"><input type="checkbox" ${state.finais[id]?.includes(p)?'checked':''} onchange="setFinal('${id}','${safe(p)}',this.checked)">${safe(p)}</label>`).join('')}</div>`).join('')}
+function setFinal(id,p,checked){let xs=state.finais[id]||[];state.finais[id]=checked?[...new Set([...xs,p])]:xs.filter(x=>x!==p);persist()}
+function periodo(){let f=v=>v?`${v.slice(8,10)}/${v.slice(5,7)}`:'';return f(state.inicio)+' a '+f(state.fim)}
+function tabelaHTML(){let ps=state.selecionadas;let h=`<table class="scale"><colgroup><col style="width:11%">${ps.map(()=>'<col>').join('')}</colgroup><tr class="title"><th colspan="${ps.length+1}">ESCALA DO DIA ${periodo()}</th></tr><tr class="names"><th></th>${ps.map(p=>`<th>${safe(p)}</th>`).join('')}</tr><tr class="bar">${Array(ps.length+1).fill('<td></td>').join('')}</tr>`;state.setores.forEach((sec,si)=>{let mapa=Object.fromEntries(ps.map(p=>[p,[]]));sec.atividades.forEach((a,i)=>{let v=getAtv(sec,i);if(v.on&&mapa[v.pessoa])mapa[v.pessoa].push(a)});let rows=Math.max(sec.linhas,...Object.values(mapa).map(x=>x.length),1);for(let r=0;r<rows;r++){h+=`<tr ${si&&r===0?'class="thick"':''}>`;if(!r)h+=`<td class="sector" rowspan="${rows}">${safe(sec.nome)}</td>`;ps.forEach(p=>h+=`<td contenteditable="true">${safe(mapa[p][r]||'')}</td>`);h+='</tr>'}});[['estacionamento','ESTACIONAMENTO'],['hospital','HOSPITAL'],['materiais','MATÉRIAS']].forEach(([id,label],i)=>h+=`<tr class="footer ${i===0?'thick':''}"><td class="footerlabel">${label}</td><td colspan="${ps.length}" contenteditable="true">${safe((state.finais[id]||[]).filter(p=>ps.includes(p)).join(' / '))}</td></tr>`);return h+'</table>'}
+function verPrevia(){if(!state.selecionadas.length){aviso('Escolha pelo menos uma colaboradora.');return}$('preview').innerHTML=tabelaHTML();go('previewPage')}
+function voltarDaPrevia(){etapa=4;mostrarEtapa();go('wizard')}
+function salvarEscala(){let nome=prompt('Nome da escala:',`Escala ${periodo()}`);if(nome===null)return;nome=nome.trim()||`Escala ${periodo()}`;banco.salvas.unshift({id:Date.now(),nome,data:new Date().toISOString(),estado:clone(state)});banco.salvas=banco.salvas.slice(0,60);persist();aviso('Escala salva com sucesso neste navegador')}
+function abrirSalvas(){let itens=banco.salvas||[];$('salvasLista').innerHTML=itens.length?itens.map(x=>`<div class="listrow"><div><strong>${safe(x.nome)}</strong><div class="hint">${new Date(x.data).toLocaleString('pt-BR')}</div></div><div class="actions"><button class="btn primary" onclick="abrirRegistro(${x.id})">Abrir</button><button class="btn danger" onclick="excluirRegistro(${x.id})">Excluir</button></div></div>`).join(''):'<p class="hint">Nenhuma escala salva ainda.</p>';go('saved')}
+function abrirRegistro(id){let item=banco.salvas.find(x=>x.id===id);if(!item)return;state=clone(item.estado);persist();etapa=1;mostrarEtapa();go('wizard')}
+function excluirRegistro(id){if(!confirm('Deseja excluir esta escala salva?'))return;banco.salvas=banco.salvas.filter(x=>x.id!==id);persist();abrirSalvas()}
+function abrirConfiguracoes(){renderConfig();go('settings')}
+function renderConfig(){$('listaPessoas').innerHTML=state.pessoas.map((p,i)=>`<div class="listrow"><strong>${safe(p)}</strong><button class="btn danger small" onclick="removerPessoa(${i})">Remover</button></div>`).join('');$('setorConfig').innerHTML=state.setores.map(s=>`<option value="${s.id}">${safe(s.nome)}</option>`).join('');renderConfigAtividades()}
+function adicionarPessoa(){let p=$('novaPessoa').value.trim().toUpperCase();if(!p)return;if(state.pessoas.includes(p)){aviso('Este nome já existe');return}state.pessoas.push(p);state.selecionadas.push(p);$('novaPessoa').value='';persist();renderConfig()}
+function removerPessoa(i){let p=state.pessoas[i];if(!confirm(`Remover ${p} do cadastro?`))return;state.pessoas.splice(i,1);state.selecionadas=state.selecionadas.filter(x=>x!==p);Object.keys(state.finais).forEach(k=>state.finais[k]=state.finais[k].filter(x=>x!==p));persist();renderConfig()}
+function renderConfigAtividades(){let id=$('setorConfig').value;let sec=state.setores.find(s=>s.id===id);$('listaAtividades').innerHTML=sec?sec.atividades.map((a,i)=>`<div class="listrow"><span class="small">${safe(a)}</span><button class="btn danger small" onclick="removerAtividade('${id}',${i})">Remover</button></div>`).join(''):''}
+function adicionarAtividade(){let sec=state.setores.find(s=>s.id===$('setorConfig').value),a=$('novaAtividade').value.trim().toUpperCase();if(!sec||!a)return;sec.atividades.push(a);$('novaAtividade').value='';persist();renderConfigAtividades()}
+function removerAtividade(id,i){let sec=state.setores.find(s=>s.id===id);if(!confirm(`Remover ${sec.atividades[i]}?`))return;sec.atividades.splice(i,1);let novo={};Object.entries(state.atividades).forEach(([k,v])=>{let [sid,idx]=k.split('__');if(sid!==id)novo[k]=v;else if(+idx<i)novo[k]=v;else if(+idx>i)novo[id+'__'+(+idx-1)]=v});state.atividades=novo;persist();renderConfigAtividades()}
+function salvarModelo(){banco.modelo=clone(state);persist();aviso('Modelo salvo para as próximas escalas')}
+function carregarModelo(){if(!banco.modelo){aviso('Nenhum modelo salvo');return}if(!confirm('Substituir a escala atual pelo modelo salvo?'))return;state=clone(banco.modelo);state.inicio=hoje();state.fim=mais15(state.inicio);persist();renderConfig();aviso('Modelo carregado')}
+function baixarBackup(){let b=new Blob([JSON.stringify(banco,null,2)],{type:'application/json'});let u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='backup_escala_limpeza.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),500)}
+async function importarBackup(e){let f=e.target.files[0];if(!f)return;try{let x=JSON.parse(await f.text());if(!x.atual||!Array.isArray(x.atual.setores)||!Array.isArray(x.atual.pessoas))throw Error('Arquivo inválido');if(!confirm('Substituir os dados deste navegador pelo backup?'))return;banco=x;state=banco.atual;persist();renderConfig();aviso('Backup importado')}catch(err){alert('Não foi possível importar: '+err.message)}e.target.value=''}
+function gerarPDF(){window.print()}
+async function exportar(tipo){if(typeof html2canvas==='undefined'){alert('A biblioteca de exportação não carregou. Verifique sua conexão com a internet e tente novamente.');return}const btns=document.querySelectorAll('.toolbar button');btns.forEach(b=>b.disabled=true);let host=document.createElement('div');try{let width=1400;host.style.cssText=`position:absolute;top:0;left:-20000px;width:${width}px;background:#fff;overflow:visible`;let clone=$('preview').querySelector('table').cloneNode(true);clone.style.cssText=`width:${width}px;min-width:${width}px;max-width:none;height:auto`;host.appendChild(clone);document.body.appendChild(host);let canvas=await html2canvas(clone,{scale:1.8,backgroundColor:'#fff',width:width,windowWidth:width,scrollX:0,scrollY:0});let a=document.createElement('a');a.download=`ESCALA_${state.inicio}_${state.fim}.${tipo}`;a.href=canvas.toDataURL(tipo==='png'?'image/png':'image/jpeg',.96);a.click()}catch(e){alert('Não foi possível exportar a imagem: '+e.message)}finally{host.remove();btns.forEach(b=>b.disabled=false)}}
+// Migração simples de atividades cadastradas em versões anteriores, quando disponíveis.
+try{if(!localStorage.getItem(KEY)){let old=JSON.parse(localStorage.getItem('escala_limpeza_setores_v2')||'null');if(Array.isArray(old)&&old.length){state.setores=old;persist()}}}catch(e){}
+// Atualização única do cadastro, preservando atribuições e histórico.
+function atualizarCadastro21(dados){
+  const sec=dados?.setores?.find(s=>s.id==='p1');
+  if(!sec)return;
+  const antiga=sec.atividades.indexOf('VITRINE SOLIDÁRIA');
+  if(antiga>=0&&!sec.atividades.includes('LIMPEZA VITRINE SOLIDÁRIA'))sec.atividades[antiga]='LIMPEZA VITRINE SOLIDÁRIA';
+  for(const nome of ['LIMPEZA TAPETE ENTRADA','LIMPEZA ÁREA DE SERVIÇO','LIMPEZA VITRINE SOLIDÁRIA']){
+    if(!sec.atividades.includes(nome)){
+      const i=sec.atividades.push(nome)-1;
+      (dados.atividades??={})['p1__'+i]={on:true,pessoa:''};
+    }
   }
-
-  // Cria uma área temporária fora da tela para capturar a tabela completa,
-  // sem depender da rolagem horizontal do celular.
-  const areaTemp = document.createElement('div');
-  areaTemp.style.position = 'fixed';
-  areaTemp.style.left = '-10000px';
-  areaTemp.style.top = '0';
-  areaTemp.style.background = '#ffffff';
-  areaTemp.style.padding = '0';
-  areaTemp.style.margin = '0';
-  areaTemp.style.width = tabelaOriginal.scrollWidth + 'px';
-  areaTemp.style.overflow = 'visible';
-
-  const tabelaClone = tabelaOriginal.cloneNode(true);
-  tabelaClone.style.width = tabelaOriginal.scrollWidth + 'px';
-  tabelaClone.style.minWidth = tabelaOriginal.scrollWidth + 'px';
-  tabelaClone.style.maxWidth = 'none';
-  tabelaClone.style.height = 'auto';
-
-  areaTemp.appendChild(tabelaClone);
-  document.body.appendChild(areaTemp);
-
-  await new Promise(resolve => setTimeout(resolve, 300));
-
-  const canvas = await html2canvas(areaTemp, {
-    scale: 2,
-    useCORS: true,
-    backgroundColor: '#ffffff',
-    width: areaTemp.scrollWidth,
-    height: areaTemp.scrollHeight,
-    windowWidth: areaTemp.scrollWidth,
-    windowHeight: areaTemp.scrollHeight,
-    scrollX: 0,
-    scrollY: 0
-  });
-
-  document.body.removeChild(areaTemp);
-
-  const link = document.createElement('a');
-  link.download = 'ESCALA_'+periodo().replaceAll('/','-').replaceAll(' ','_')+'.jpg';
-  link.href = canvas.toDataURL('image/jpeg', 1.0);
-  link.click();
 }
-
-
-function gerarPDF(){renderizar();const antigo=document.title;document.title='ESCALA_'+periodo().replaceAll('/','-').replaceAll(' ','_');setTimeout(()=>{window.print();document.title=antigo},200)}
-function limparTudo(){document.querySelectorAll('.atv-check').forEach(c=>c.checked=false);renderizar()}
-function esc(s){return String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
-
-function formatarDataInput(data){
-  const ano = data.getFullYear();
-  const mes = String(data.getMonth() + 1).padStart(2, '0');
-  const dia = String(data.getDate()).padStart(2, '0');
-  return `${ano}-${mes}-${dia}`;
+if(!banco.atualizacaoAtividadesNov2026){
+  atualizarCadastro21(state);
+  atualizarCadastro21(banco.modelo);
+  banco.atualizacaoAtividadesNov2026=true;
 }
-
-function iniciarPeriodoAutomatico(){
-  const hoje = new Date();
-  const dataFinal = new Date(hoje);
-  dataFinal.setDate(hoje.getDate() + 15);
-
-  document.getElementById('dataInicio').value = formatarDataInput(hoje);
-  document.getElementById('dataFim').value = formatarDataInput(dataFinal);
-}
-
-document.getElementById('dataInicio').addEventListener('change', () => {
-  const inicio = document.getElementById('dataInicio').value;
-
-  if(inicio){
-    const dataInicio = new Date(inicio + 'T00:00:00');
-    const dataFinal = new Date(dataInicio);
-    dataFinal.setDate(dataInicio.getDate() + 15);
-    document.getElementById('dataFim').value = formatarDataInput(dataFinal);
-  }
-
-  renderizar();
-});
-
-document.getElementById('dataFim').addEventListener('change',renderizar);
-document.getElementById('pessoasTxt').addEventListener('input',()=>{montarAtividades()});
-
-iniciarPeriodoAutomatico();
-montarAtividades();
-
-</script>
-</body>
-</html>
+persist();
+</script></body></html>
